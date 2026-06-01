@@ -1,68 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Deployment</title>
-<!-- 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            padding-top: 100px;
-        }
-
-        .container {
-            background: white;
-            width: 60%;
-            margin: auto;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px gray;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        p {
-            color: #666;
-        }
-
-        button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #007BFF;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style> -->
 </head>
 <body>
 
-    <div class="container">
-        <h1>Welcome to My Website 🚀</h1>
-        <p>This HTML page is successfully deployed.</p>
+  <div class="container">
 
-        <!-- <button onclick="showMessage()">
-            Click Me
-        </button>
-
-        <p id="message"></p>
+    <div class="left">
+      <input type="text" id="name" placeholder="Enter name">
+      <button onclick="saveUser()">Save</button>
     </div>
 
-    <script>
-        function showMessage() {
-            document.getElementById("message").innerHTML =
-                "Deployment is working successfully!";
-        }
-    </script> -->
+    <div class="right">
+      <h3>Users</h3>
+      <div id="users"></div>
+    </div>
+
+  </div>
+
+  <script>
+    const API = "https://section-m-f1lg.onrender.com/users";
+
+    async function saveUser() {
+      const name = document.getElementById("name").value;
+
+      await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name })
+      });
+
+      document.getElementById("name").value = "";
+      loadUsers();
+    }
+
+    async function loadUsers() {
+      const res = await fetch(API);
+      const users = await res.json();
+
+      document.getElementById("users").innerHTML =
+        users.map(u => `<p>${u.name}</p>`).join("");
+    }
+
+    loadUsers();
+  </script>
 
 </body>
 </html>
